@@ -1,8 +1,9 @@
-
 function Footer() {
 
   return (
-    <h1> Copyright @NTT</h1>
+    <footer className="app-footer">
+      <p>Copyright @NTT</p>
+    </footer>
   )
 }
 
