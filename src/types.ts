@@ -31,12 +31,3 @@ export interface User {
   name: string
 }
 
-/**
- * The two screens a logged-in user can be looking at. This was "just a
- * string" in the JS version (currentView, initialised to 'dashboard').
- * A union of string literals says "still a plain string at runtime,
- * but only these two exact values are ever valid" — so a typo like
- * onNavigate('artcles') becomes a compile error instead of a silently
- * dead nav button.
- */
-export type View = 'dashboard' | 'articles'

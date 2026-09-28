@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './App.css'
 import Header from './Header.tsx'
@@ -6,24 +7,22 @@ import Footer from './Footer.tsx'
 import Login from './Login.tsx'
 import Dashboard from './Dashboard.tsx'
 import ArticleList from './ArticleList.tsx'
-import type { Article, User, View } from './types.ts'
+import ArticleDetail from './ArticleDetail.tsx'
+import NotFound from './NotFound.tsx'
+import type { Article, User } from './types'
 
 const ARTICLES_URL = 'http://localhost:3001/articles'
 
 function App() {
 
-  // --- Auth state --------------------------------------------------------
   const [user, setUser] = useState<User | null>(null)
 
-  // --- Which screen to show once logged in --------------------------------
-  const [currentView, setCurrentView] = useState<View>('dashboard')
-
-  // --- Articles state (lifted up from ArticleList) ------------------------
   const [articles, setArticles] = useState<Article[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // --- Lifecycle: fetch articles once, right after mounting ---------------
+  const navigate = useNavigate()
+
   useEffect(() => {
     let isMounted = true
 
@@ -53,21 +52,13 @@ function App() {
     }
   }, [])
 
-  // --- Auth handlers -------------------------------------------------------
-
   const handleLoginSuccess = (loggedInUser: User) => {
     setUser(loggedInUser)
-    setCurrentView('dashboard')
+    navigate('/dashboard')
   }
 
   const handleLogout = () => {
     setUser(null)
-  }
-
-  // --- Article handlers ------------------------------------------------
-
-  const handleView = (id: number) => {
-    console.log('View article with id: ', id)
   }
 
   const handleLike = (id: number) => {
@@ -86,44 +77,77 @@ function App() {
     )
   }
 
-  // --- Conditional rendering: logged out vs logged in ----------------------
 
-  if (!user) {
-    return <Login onLoginSuccess={handleLoginSuccess} />
-  }
 
-  return (
+    return (
     <>
-      <Header
-        user={user}
-        currentView={currentView}
-        onNavigate={setCurrentView}
-        onLogout={handleLogout}
-      />
+      {user && <Header user={user} onLogout={handleLogout} />}
 
-      {currentView === 'dashboard' && (
-        <Dashboard
-          user={user}
-          articles={articles}
-          loading={loading}
-          error={error}
+      <Routes>
+        <Route
+          path="/"
+          element={<Navigate to={user ? '/dashboard' : '/login'} replace />}
         />
-      )}
 
-      {currentView === 'articles' && (
-        <ArticleList
-          articles={articles}
-          loading={loading}
-          error={error}
-          onView={handleView}
-          onLike={handleLike}
-          onFavourite={handleFavourite}
+        <Route
+          path="/login"
+          element={
+            user
+              ? <Navigate to="/dashboard" replace />
+              : <Login onLoginSuccess={handleLoginSuccess} />
+          }
         />
-      )}
 
-      <Footer />
+        <Route
+          path="/dashboard"
+          element={
+            user
+              ? <Dashboard user={user} articles={articles} loading={loading} error={error} />
+              : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route
+          path="/articles"
+          element={
+            user
+              ? (
+                <ArticleList
+                  articles={articles}
+                  loading={loading}
+                  error={error}
+                  onLike={handleLike}
+                  onFavourite={handleFavourite}
+                />
+              )
+              : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route
+          path="/articles/:id"
+          element={
+            user
+              ? (
+                <ArticleDetail
+                  articles={articles}
+                  loading={loading}
+                  error={error}
+                  onLike={handleLike}
+                  onFavourite={handleFavourite}
+                />
+              )
+              : <Navigate to="/login" replace />
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+
+      {user && <Footer />}
     </>
   )
 }
+
 
 export default App
