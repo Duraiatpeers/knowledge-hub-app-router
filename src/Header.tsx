@@ -1,19 +1,13 @@
-/**
- * Header
- *
- * Day 3 concepts used here
- * -------------------------
- * - Props: user, currentView, onNavigate and onLogout all arrive from
- *   App. Header doesn't track navigation state itself — every click
- *   just calls a callback prop and lets App decide what happens next.
- *
- * Day 4 concepts used here
- * -------------------------
- * - Conditional rendering: the "active" class on each nav button is
- *   picked with a ternary based on currentView, so the current screen
- *   is always visually obvious.
- */
-function Header({ user, currentView, onNavigate, onLogout }) {
+import type { User, View } from './types'
+
+interface HeaderProps {
+  user: User
+  currentView: View
+  onNavigate: (view: View) => void
+  onLogout: () => void
+}
+
+function Header({ user, currentView, onNavigate, onLogout }: HeaderProps) {
   return (
     <header className="app-header">
       <h1>KnowledgeHub</h1>

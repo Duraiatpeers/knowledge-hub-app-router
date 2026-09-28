@@ -1,22 +1,13 @@
-/**
- * Dashboard
- *
- * Day 3 concepts used here
- * -------------------------
- * - Props: user, articles, loading and error all arrive as props from
- *   App — Dashboard fetches nothing itself and owns no state.
- *
- * Day 4 concepts used here
- * -------------------------
- * - Conditional rendering: loading/error are handled with early returns
- *   before the stats are computed, the same pattern used in ArticleList.
- * - Derived data: the three stats below are never stored in their own
- *   useState — they're recalculated from the articles prop on every
- *   render with reduce()/filter(). Deriving a value instead of
- *   duplicating it in a second piece of state means there's only ever
- *   one source of truth (articles), so it can never drift out of sync.
- */
-function Dashboard({ user, articles, loading, error }) {
+import type { Article, User } from './types'
+
+interface DashboardProps {
+  user: User
+  articles: Article[]
+  loading: boolean
+  error: string | null
+}
+
+function Dashboard({ user, articles, loading, error }: DashboardProps) {
 
   if (loading) {
     return <p className="status-message">Loading dashboard…</p>
@@ -48,7 +39,7 @@ function Dashboard({ user, articles, loading, error }) {
 
         <div className="stat-card">
           <span className="stat-value">{favouriteCount}</span>
-          <span className="stat-label">Favourited</span>
+          <span className="stat-label">Favourites</span>
         </div>
       </div>
     </div>
