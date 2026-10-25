@@ -1,4 +1,18 @@
-# React + Vite
+# KnowledgeHub
+
+## Running locally
+
+Install dependencies with `npm install`. Start the mock API in one terminal:
+
+```sh
+npx json-server --watch data/db.json --port 3001
+```
+
+Then start the app in another terminal with `npm run dev`.
+
+The demo login accounts are `anita` / `anita123` and `rahul` / `rahul123`.
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
