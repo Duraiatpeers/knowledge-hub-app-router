@@ -18,15 +18,20 @@ function Login({ onLoginSuccess }: LoginProps) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
+    const trimmedUsername = username.trim()
+    const trimmedPassword = password.trim()
+
     setSubmitting(true)
     setError(null)
 
     try {
-      const response = await axios.get<User[]>(`${USERS_URL}?username=${username}`)
-      const matchedUser = response.data[0]
+      const response = await axios.get<User[]>(USERS_URL)
+      const normalizedUsername = trimmedUsername.toLowerCase()
+      const matchedUser = response.data.find(user => user.username.toLowerCase() === normalizedUsername)
 
-      if (matchedUser && matchedUser.password === password) {
-        onLoginSuccess(matchedUser)
+      if (matchedUser && matchedUser.password === trimmedPassword) {
+        const { password: _password, ...safeUser } = matchedUser
+        onLoginSuccess(safeUser)
       } else {
         setError('Incorrect username or password.')
       }

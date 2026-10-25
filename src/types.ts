@@ -18,16 +18,15 @@ export interface Article {
 }
 
 /**
- * One user, exactly as db.json's "users" collection stores it.
+ * One user from the mock database.
  *
- * Yes, this includes password as a plain string, matching the mock
- * auth exactly. Typing it doesn't make it safer — it just describes
- * the shape honestly.
+ * The password is kept only for validation against the mock data and should
+ * be stripped before storing it in app state.
  */
 export interface User {
   id: number
   username: string
-  password: string
+  password?: string
   name: string
 }
 

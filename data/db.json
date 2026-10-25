@@ -37,15 +37,16 @@
       "isFavourite": false
     },
     {
- 
+      "id": 5,
       "title": "Writing Your First Unit Test",
       "category": "Testing",
       "author": "Anita",
       "description": "Getting comfortable with Jest before we need it on Day 9.",
       "likes": 9,
       "isFavourite": true
-    },{
-      
+    },
+    {
+      "id": 6,
       "title": "Writing Your First e2e Test",
       "category": "Testing",
       "author": "Chris",

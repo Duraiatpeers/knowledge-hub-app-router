@@ -53,7 +53,8 @@ function App() {
   }, [])
 
   const handleLoginSuccess = (loggedInUser: User) => {
-    setUser(loggedInUser)
+    const { password: _password, ...safeUser } = loggedInUser
+    setUser(safeUser)
     navigate('/dashboard')
   }
 
