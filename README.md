@@ -1,6 +1,6 @@
 # KnowledgeHub
 
-## Running locally
+## Running locally - 1
 
 Install dependencies with `npm install`. Start the mock API in one terminal:
 
